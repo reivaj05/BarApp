@@ -1,8 +1,8 @@
-from venues.models import Venue
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from venues.models import Venue
 
 
 # Create your models here.
@@ -18,17 +18,15 @@ class Menu(models.Model):
         _('menu'),
         max_length=50,
         blank=True,
-        help_text=_('Insert a name for the menu')
+        help_text=_('Write a name for the menu')
     )  # ??
     description = models.TextField(
         _('description'),
         max_length=255,
         blank=True,
-        help_text=_('Insert a description for the menu')
+        help_text=_('Write a description for the menu')
     )  # ??
-    num_sections = models.IntegerField(default=0)  # ??
-    num_products = models.IntegerField(default=0)  # ??
-    venue = models.ForeignKey(Venue, help_text=_('Select the desired venue'))
+    #venue = models.ForeignKey(Venue, help_text=_('Select the desired venue'))
 
     def __unicode__(self):
         return '{menu_name}'.format(menu_name=self.name)
@@ -43,13 +41,13 @@ class MenuSection(models.Model):
     name = models.CharField(
         _('Section name'),
         max_length=50,
-        help_text=_('Insert a name for the menu section')
+        help_text=_('Write a name for the menu section')
     )
     description = models.TextField(
         _('Section description'),
         max_length=255,
         blank=True,
-        help_text=_('Insert a description for the menu section')
+        help_text=_('Write a description for the menu section')
     )
     image = models.ImageField(
         _('Image section'),
@@ -75,13 +73,13 @@ class Product(models.Model):
     name = models.CharField(
         _('Product name'),
         max_length=50,
-        help_text=_('Insert a name for the product')
+        help_text=_('Write a name for the product')
     )
     description = models.TextField(
         _('Product description'),
         max_length=255,
         blank=True,
-        help_text=_('Insert a description for the product')
+        help_text=_('Write a description for the product')
     )
     price = models.DecimalField(
         _('Product price'),
@@ -89,7 +87,7 @@ class Product(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(1)],
         default=1,
-        help_text=_('Insert a price for the  product')
+        help_text=_('Write a price for the  product')
     )
     image = models.ImageField(
         _('Image product'),

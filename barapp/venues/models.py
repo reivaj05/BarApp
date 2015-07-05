@@ -3,11 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 # Create your models here.
 
-from django.conf import settings
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-# Create your models here.
-
 
 class Venue(models.Model):
 
@@ -18,26 +13,26 @@ class Venue(models.Model):
     name = models.CharField(
         _('Venue name'),
         max_length=50,
-        help_text=_('Insert a name for the venue')
+        help_text=_('Write a name for the venue')
     )
     description = models.TextField(
         _('Description'),
         max_length=255,
         blank=True,
-        help_text=_('Insert a description for the venue')
+        help_text=_('Write a description for the venue')
     )
     direction = models.TextField(
         _('Direction'),
         max_length=150,
         blank=True,
-        help_text=_('Insert a direction for the venue')
+        help_text=_('Write a direction for the venue')
     )
     #Change for an appropiate field
     phone_number = models.CharField(
         _('Phone number'),
         max_length=15,
         blank=True,
-        help_text=_('Insert a phone number for the venue')
+        help_text=_('Write a phone number for the venue')
     )
     image = models.ImageField(
         _('Image venue'),
