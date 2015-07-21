@@ -1,13 +1,13 @@
-from django.conf.urls import patterns, include, url, static
-from django.contrib import admin
+from django.conf.urls import include, url, static
 from django.conf import settings
+from django.contrib import admin
 
-urlpatterns = patterns('',
-                       url(r'^admin/', include(admin.site.urls)),
-                       url(r'^', include('common.urls', namespace='common')),
-                       url(r'^menus/', include('menus.urls', namespace='menus')),
-                       url(r'^venues/', include('venues.urls', namespace='venues')),
-                       )
+urlpatterns = [
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('common.urls', namespace='common')),
+    url(r'^menus/', include('menus.urls', namespace='menus')),
+    url(r'^venues/', include('venues.urls', namespace='venues')),
+]
 
 if settings.DEBUG:
     urlpatterns += static.static(

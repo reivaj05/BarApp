@@ -4,6 +4,11 @@ from barapp.keys import development
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = development.SECRET_KEY
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+TEMPLATE_DEBUG = True
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
@@ -23,9 +28,6 @@ INSTALLED_APPS += (
     'django_extensions',
     'debug_toolbar',
 )
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
