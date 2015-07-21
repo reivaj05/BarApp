@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^', include('common.urls', namespace='common')),
     url(r'^menus/', include('menus.urls', namespace='menus')),
     url(r'^venues/', include('venues.urls', namespace='venues')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
 ]
 
 if settings.DEBUG:
