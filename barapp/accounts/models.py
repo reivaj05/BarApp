@@ -28,8 +28,8 @@ class UserProfile(models.Model):
         verbose_name_plural = _('Users')
 
     GENDER_CHOICES = [
-        ('Male', 'Male'),
-        ('Female', 'Female')
+        ('Male', _('Male')),
+        ('Female', _('Female'))
     ]
 
     authentication_user = models.OneToOneField(User)

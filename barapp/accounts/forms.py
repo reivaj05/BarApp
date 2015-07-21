@@ -1,20 +1,25 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from accounts import models, validators
+from .models import UserProfile
+from .validators import (
+    validate_username_does_not_exists,
+    validate_user_already_exists,
+    validate_user_is_active,
+)
 
 
 class UserProfileCreateForm(forms.ModelForm):
     confirm_password = forms.CharField(
         widget=forms.PasswordInput, label='Confirm password'
-        )
+    )
 
     class Meta:
         model = User
         fields = [
             'username', 'password', 'confirm_password', 'first_name',
             'last_name', 'email'
-            ]
+        ]
         labels = {
             'email': 'Email address'
         }
@@ -25,7 +30,8 @@ class UserProfileCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserProfileCreateForm, self).__init__(*args, **kwargs)
         self.fields['username'].validators.append(
-            validators.validate_username_does_not_exists)
+            validate_username_does_not_exists
+        )
         self.fields['username'].help_text = ''
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
@@ -41,15 +47,15 @@ class UserProfileCreateForm(forms.ModelForm):
                     forms.ValidationError(
                         'Passwords does not match',
                         code='password_mismatch'
-                        )
                     )
+                )
                 self.add_error(
                     'confirm_password',
                     forms.ValidationError(
                         'Passwords does not match',
                         code='password_mismatch'
-                        )
                     )
+                )
         return self.cleaned_data
 
     def save(self, commit=True):
@@ -57,31 +63,30 @@ class UserProfileCreateForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
-            models.UserProfile.objects.create(authentication_user=user)
+            UserProfile.objects.create(authentication_user=user)
         return user
 
 
 class UserProfileUpdateForm(forms.ModelForm):
     image_profile = forms.ImageField(
-        required=False, label='Profile image'
-        )
-    age = forms.IntegerField(label='Age', required=True)
+        required=False,
+        label='Profile image'
+    )
+    age = forms.IntegerField(label='Age')
     gender = forms.ChoiceField(
         label='Gender',
-        required=True,
-        choices=models.UserProfile.GENDER_CHOICES)
-    bio = forms.CharField(
-        required=True,
-        widget=forms.Textarea)
-    is_smoker = forms.BooleanField(required=False)
-    is_drinker = forms.BooleanField(required=False)
+        choices=UserProfile.GENDER_CHOICES
+    )
+    biography = forms.CharField(
+        widget=forms.Textarea
+    )
 
     class Meta:
         model = User
         fields = [
-            'first_name', 'last_name', 'age', 'gender', 'is_smoker',
-            'is_drinker', 'email', 'image_profile', 'bio'
-            ]
+            'first_name', 'last_name', 'age', 'gender',
+            'email', 'image_profile', 'biography'
+        ]
         labels = {
             'email': 'Email address'
         }
@@ -92,29 +97,27 @@ class UserProfileUpdateForm(forms.ModelForm):
         self.fields['last_name'].required = True
         self.fields['email'].required = True
         try:
-            user_profile = models.UserProfile.objects.get(
+            user_profile = UserProfile.objects.get(
                 authentication_user=kwargs['instance']
-                )
+            )
         except UserProfile.DoesNotExist:
-            raise ValidationError(
-                'The username "%(username)s" does not have a related UserProfile',
+            raise forms.ValidationError(
+                'username "%(username)s" does not have a related UserProfile',
                 code='invalid_username',
                 params={
                     'username': kwargs['instance'].username
                 }
-                )
+            )
         self.initial.update({
             'image_profile': user_profile.image_profile,
             'age': user_profile.age,
             'gender': user_profile.gender,
-            'bio': user_profile.bio,
-            'is_smoker': user_profile.is_smooker,
-            'is_drinker': user_profile.is_drinker
+            'biography': user_profile.biography,
         })
 
     def save(self, commit=True):
         user = super(UserProfileUpdateForm, self).save(commit=False)
-        user_profile = models.UserProfile.objects.get(authentication_user=user)
+        user_profile = UserProfile.objects.get(authentication_user=user)
         user_profile.age = self.cleaned_data['age']
         user_profile.gender = self.cleaned_data['gender']
         user_profile.image_profile = self.cleaned_data['image_profile']
@@ -132,17 +135,17 @@ class AuthenticationForm(forms.Form):
         max_length=30,
         label='Username',
         validators=[
-            validators.validate_user_already_exists,
-            validators.validate_user_is_active
-            ]
-        )
+            validate_user_already_exists,
+            validate_user_is_active
+        ]
+    )
     password = forms.CharField(
         max_length=128, widget=forms.PasswordInput,
         label='Password'
-        )
+    )
     next_url = forms.CharField(
         max_length=128, required=False, widget=forms.HiddenInput
-        )
+    )
 
     def is_valid(self):
         is_valid = super(AuthenticationForm, self).is_valid()
@@ -151,15 +154,15 @@ class AuthenticationForm(forms.Form):
             password = self.cleaned_data['password']
             user_authenticated = authenticate(
                 username=username, password=password
-                )
+            )
             if user_authenticated is None:
                 self.add_error(
                     'password',
                     forms.ValidationError(
                         'Incorrect password',
                         code='incorrect_password'
-                        )
                     )
+                )
                 is_valid = False
             else:
                 self.cleaned_data['user_authenticated'] = user_authenticated

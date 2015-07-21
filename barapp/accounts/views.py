@@ -6,7 +6,11 @@ from django.views.generic import (
     CreateView, DetailView, FormView,
     RedirectView, TemplateView, UpdateView,
 )
-from accounts import forms, models
+from .forms import (
+    AuthenticationForm, UserProfileCreateForm,
+    UserProfileUpdateForm,
+)
+from .models import UserProfile
 from common.mixins import FormMessagesMixin, LoginRequiredMixin
 
 # Create your views here.
@@ -22,14 +26,14 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         authentication_user = self.request.user
-        return models.UserProfile.objects.get(
+        return UserProfile.objects.get(
             authentication_user=authentication_user
         )
 
 
 class UserProfileCreateView(FormMessagesMixin, CreateView):
     template_name = 'accounts/create_user_profile.html'
-    form_class = forms.UserProfileCreateForm
+    form_class = UserProfileCreateForm
     success_message = 'User profile successfully created'
     error_message = 'There was an error trying to create the user profile'
 
@@ -47,7 +51,7 @@ class UserProfileCreateView(FormMessagesMixin, CreateView):
 
 class UserProfileUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     template_name = 'accounts/update_user_profile.html'
-    form_class = forms.UserProfileUpdateForm
+    form_class = UserProfileUpdateForm
     success_message = 'User profile successfully updated'
     error_message = 'An error ocurred trying to update the user profile'
 
@@ -61,9 +65,15 @@ class UserProfileUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         })
         return kwargs
 
+    def get_object(self, queryset=None):
+        authentication_user = self.request.user
+        return UserProfile.objects.get(
+            authentication_user=authentication_user
+        )
+
 
 class LoginFormView(FormMessagesMixin, FormView):
-    form_class = forms.AuthenticationForm
+    form_class = AuthenticationForm
     template_name = 'accounts/login.html'
     success_message = 'User successfully logged in'
     error_message = 'There was an error trying to log in'
