@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'menus',
     'common',
     'bootstrap3',
+    'accounts',
 )
 
 MIDDLEWARE_CLASSES = (

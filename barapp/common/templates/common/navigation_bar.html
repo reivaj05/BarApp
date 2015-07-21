@@ -30,10 +30,10 @@
                 </li><!-- dropdown -->
                 {% else %}
                 <li>
-                    <a href="">Login</a>
+                    <a href="{% url 'accounts:login' %}">Login</a>
                 </li>
                 <li>
-                    <a href="">Register</a>
+                    <a href="{% url 'accounts:create_user_profile' %}">Register</a>
                 </li>
                 {% endif %}
             </ul><!-- navbar-nav -->
