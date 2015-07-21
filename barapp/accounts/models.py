@@ -60,7 +60,7 @@ class UserProfile(models.Model):
             url=settings.STATIC_URL,
             image_path='accounts/img/profile-photo.png'
         ),
-        help_text=_('Upload an image for the menu section')
+        help_text=_('Upload an image for the user profile')
     )
 
     def __unicode__(self):

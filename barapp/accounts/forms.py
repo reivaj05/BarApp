@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 from .models import UserProfile
 from .validators import (
     validate_username_does_not_exists,
@@ -11,7 +12,7 @@ from .validators import (
 
 class UserProfileCreateForm(forms.ModelForm):
     confirm_password = forms.CharField(
-        widget=forms.PasswordInput, label='Confirm password'
+        widget=forms.PasswordInput
     )
 
     class Meta:
@@ -20,9 +21,6 @@ class UserProfileCreateForm(forms.ModelForm):
             'username', 'password', 'confirm_password', 'first_name',
             'last_name', 'email'
         ]
-        labels = {
-            'email': 'Email address'
-        }
         widgets = {
             'password': forms.PasswordInput
         }
@@ -32,7 +30,6 @@ class UserProfileCreateForm(forms.ModelForm):
         self.fields['username'].validators.append(
             validate_username_does_not_exists
         )
-        self.fields['username'].help_text = ''
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
@@ -45,14 +42,14 @@ class UserProfileCreateForm(forms.ModelForm):
                 self.add_error(
                     'password',
                     forms.ValidationError(
-                        'Passwords does not match',
+                        _('Passwords does not match'),
                         code='password_mismatch'
                     )
                 )
                 self.add_error(
                     'confirm_password',
                     forms.ValidationError(
-                        'Passwords does not match',
+                        _('Passwords does not match'),
                         code='password_mismatch'
                     )
                 )
@@ -87,9 +84,6 @@ class UserProfileUpdateForm(forms.ModelForm):
             'first_name', 'last_name', 'age', 'gender',
             'email', 'image_profile', 'biography'
         ]
-        labels = {
-            'email': 'Email address'
-        }
 
     def __init__(self, *args, **kwargs):
         super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
@@ -102,7 +96,9 @@ class UserProfileUpdateForm(forms.ModelForm):
             )
         except UserProfile.DoesNotExist:
             raise forms.ValidationError(
-                'username "%(username)s" does not have a related UserProfile',
+                _('username "%(username)s" does not have a related'
+                  'UserProfile'
+                  ),
                 code='invalid_username',
                 params={
                     'username': kwargs['instance'].username
@@ -121,9 +117,7 @@ class UserProfileUpdateForm(forms.ModelForm):
         user_profile.age = self.cleaned_data['age']
         user_profile.gender = self.cleaned_data['gender']
         user_profile.image_profile = self.cleaned_data['image_profile']
-        user_profile.bio = self.cleaned_data['bio']
-        user_profile.is_smooker = self.cleaned_data['is_smoker']
-        user_profile.is_drinker = self.cleaned_data['is_drinker']
+        user_profile.bio = self.cleaned_data['biography']
         if commit:
             user_profile.save()
             user.save()
@@ -140,8 +134,7 @@ class AuthenticationForm(forms.Form):
         ]
     )
     password = forms.CharField(
-        max_length=128, widget=forms.PasswordInput,
-        label='Password'
+        max_length=128, widget=forms.PasswordInput
     )
     next_url = forms.CharField(
         max_length=128, required=False, widget=forms.HiddenInput
@@ -159,7 +152,7 @@ class AuthenticationForm(forms.Form):
                 self.add_error(
                     'password',
                     forms.ValidationError(
-                        'Incorrect password',
+                        _('Incorrect password'),
                         code='incorrect_password'
                     )
                 )

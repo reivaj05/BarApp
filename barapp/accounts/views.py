@@ -6,6 +6,7 @@ from django.views.generic import (
     CreateView, DetailView, FormView,
     RedirectView, TemplateView, UpdateView,
 )
+from django.utils.translation import ugettext_lazy as _
 from .forms import (
     AuthenticationForm, UserProfileCreateForm,
     UserProfileUpdateForm,
@@ -32,10 +33,10 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
 
 
 class UserProfileCreateView(FormMessagesMixin, CreateView):
-    template_name = 'accounts/create_user_profile.html'
     form_class = UserProfileCreateForm
-    success_message = 'User profile successfully created'
-    error_message = 'There was an error trying to create the user profile'
+    template_name = 'accounts/create_user_profile.html'
+    success_message = _('User profile successfully created')
+    error_message = _('There was an error trying to create the user profile')
 
     def get_success_url(self):
         return reverse('accounts:login')
@@ -50,10 +51,10 @@ class UserProfileCreateView(FormMessagesMixin, CreateView):
 
 
 class UserProfileUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
-    template_name = 'accounts/update_user_profile.html'
     form_class = UserProfileUpdateForm
-    success_message = 'User profile successfully updated'
-    error_message = 'An error ocurred trying to update the user profile'
+    template_name = 'accounts/update_user_profile.html'
+    success_message = _('User profile successfully updated')
+    error_message = _('An error ocurred trying to update the user profile')
 
     def get_success_url(self):
         return reverse('accounts:user_profile')
@@ -75,8 +76,8 @@ class UserProfileUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 class LoginFormView(FormMessagesMixin, FormView):
     form_class = AuthenticationForm
     template_name = 'accounts/login.html'
-    success_message = 'User successfully logged in'
-    error_message = 'There was an error trying to log in'
+    success_message = _('User successfully logged in')
+    error_message = _('There was an error trying to log in')
 
     def __init__(self, **kwargs):
         self.success_url = reverse('accounts:user_profile')
@@ -99,7 +100,7 @@ class LoginFormView(FormMessagesMixin, FormView):
         if request.user.is_authenticated():
             messages.add_message(
                 request=request, level=messages.INFO,
-                message='Already logged in'
+                message=_('Already logged in')
             )
             return redirect(self.get_success_url())
         return super(LoginFormView, self).get(request, *args, **kwargs)
@@ -122,11 +123,11 @@ class LogoutRedirectView(RedirectView):
             logout(self.request)
             messages.add_message(
                 request=request, level=messages.SUCCESS,
-                message='Logout successful'
+                message=_('Logout successful')
             )
         else:
             messages.add_message(
                 request=request, level=messages.ERROR,
-                message='There is no user logged in'
+                message=_('There is no user logged in')
             )
         return super(LogoutRedirectView, self).get(request, *args, **kwargs)
