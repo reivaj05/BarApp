@@ -1,18 +1,18 @@
 {% extends 'common/base.html' %}
-
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block content %}
 
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h1>Register</h1>
+            <h1>{% trans "Register" %}</h1>
             <form enctype="multipart/form-data" action="#" method="post" class="form" novalidate>
                 {% csrf_token %}
                 {% bootstrap_form form %}
                 {% buttons %}
-                <button type="submit" class="btn btn-success">Register</button>
+                <button type="submit" class="btn btn-success">{% trans "Register" %}</button>
                 {% endbuttons %}
             </form>
         </div><!-- col-md -->

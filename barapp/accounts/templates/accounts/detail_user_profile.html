@@ -1,8 +1,6 @@
 {% extends 'common/base.html' %}
-
-{% load staticfiles %}
-
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block content %}
 
@@ -14,22 +12,20 @@
                 <div class="caption">
                     <h3>{{ user_profile.authentication_user.get_full_name }}</h3>
                     {% if user_profile.age %}
-                    <p><strong>Age:</strong> {{ user_profile.age }}</p>
+                    <p><strong>A{% trans "Age:" %}</strong> {{ user_profile.age }}</p>
                     {% endif %}
                     {% if user_profile.gender %}
-                    <p><strong>Gender:</strong> {{ user_profile.gender }}</p>
+                    <p><strong>{% trans "Gender:" %}</strong> {{ user_profile.gender }}</p>
                     {% endif %}
-                    <p><strong>Is smoker:</strong> {{ user_profile.is_smooker }}</p>
-                    <p><strong>Is drinker:</strong> {{ user_profile.is_drinker }}</p>
-                    <p><strong>Email:</strong> {{ user_profile.authentication_user.email }}</p>
-                    <p><strong>Date joined:</strong> {{ user_profile.authentication_user.date_joined }}</p>
-                    <p><strong>Last login:</strong> {{ user_profile.authentication_user.last_login }}</p>
+                    <p><strong>{% trans "Email" %}:</strong> {{ user_profile.authentication_user.email }}</p>
+                    <p><strong>{% trans "Date joined" %}</strong> {{ user_profile.authentication_user.date_joined }}</p>
+                    <p><strong>{% trans "Last login:" %}</strong> {{ user_profile.authentication_user.last_login }}</p>
                     {% if user_profile.bio %}
-                    <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
+                    <p><strong>{% trans "Biography" %}</strong> {{ user_profile.bio }}</p>
                     {% endif %}
 
                     <a href="{% url 'accounts:update_user_profile' %}">
-                        <btn class="btn btn-success">Edit profile</btn>
+                        <btn class="btn btn-success">{% trans "Edit profile" %}</btn>
                     </a>
                 </div>
             </div><!-- thumbnail -->
