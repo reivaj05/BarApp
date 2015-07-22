@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
+from django.views.generic import (
+    CreateView, DetailView,
+    TemplateView, UpdateView,
+)
 from .forms import VenueCreateForm, VenueUpdateForm
 from .models import Venue
-from common import mixins
+from common.mixins import (
+    FormMessagesMixin, LoginRequiredMixin, PermissionRequiredMixin
+)
 
 # Create your views here.
 
@@ -17,14 +20,17 @@ class VenueDetailView(DetailView):
     model = Venue
 
 
-class VenueCreateView(mixins.FormMessagesMixin, CreateView):
+class VenueCreateView(
+        LoginRequiredMixin, PermissionRequiredMixin,
+        FormMessagesMixin, CreateView):
     template_name = 'venues/venue_create.html'
     form_class = VenueCreateForm
+    permission = 'venues.add_venue'
     success_message = 'Venue successfully created'
     error_message = 'There was an error trying to create the venue'
 
 
-class VenueUpdateView(mixins.FormMessagesMixin, UpdateView):
+class VenueUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     template_name = 'venues/venue_update.html'
     form_class = VenueUpdateForm
     success_message = 'venue successfully updated'

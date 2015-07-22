@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from .models import UserProfile
 from .validators import (
@@ -8,6 +8,7 @@ from .validators import (
     validate_user_already_exists,
     validate_user_is_active,
 )
+from common.utils import add_permission
 
 
 class UserProfileCreateForm(forms.ModelForm):
@@ -59,9 +60,10 @@ class UserProfileCreateForm(forms.ModelForm):
         user = super(UserProfileCreateForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
-            permission = Permission.objects.get(name='Can add Venue')
-            user.user_permissions.add(permission)
             user.save()
+            add_permission(permission='add Venue', user=user)
+            add_permission(permission='change Venue', user=user)
+            add_permission(permission='delete Venue', user=user)
             UserProfile.objects.create(authentication_user=user)
         return user
 

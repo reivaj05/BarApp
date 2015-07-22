@@ -1,7 +1,9 @@
-from django.views import generic
+from django.views.generic import View
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth.views import redirect_to_login
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
 
 class FormMessagesMixin(object):
@@ -36,7 +38,7 @@ class FormMessagesMixin(object):
         return super(FormMessagesMixin, self).form_invalid(form)
 
 
-class LoginRequiredMixin(generic.View):
+class LoginRequiredMixin(View):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -48,3 +50,27 @@ class LoginRequiredMixin(generic.View):
             return redirect_to_login(next=request.get_full_path())
         return super(LoginRequiredMixin, self).dispatch(
             request, *args, **kwargs)
+
+
+class PermissionRequiredMixin(View):
+    permission = None
+
+    def __init__(self, **kwargs):
+        self.no_permission_url = reverse('accounts:user_profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.permission:
+            if request.user.has_perm(self.permission):
+                return super(PermissionRequiredMixin, self).dispatch(
+                    request, *args, **kwargs)
+            else:
+                messages.add_message(
+                    request=self.request,
+                    level=messages.INFO,
+                    message='You do not have permission for this action'
+                )
+                return redirect(self.no_permission_url)
+        else:
+            raise ImproperlyConfigured(
+                '"permission" field must be defined'
+            )
