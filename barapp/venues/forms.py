@@ -6,6 +6,7 @@ class VenueCreateForm(forms.ModelForm):
 
     class Meta:
         model = Venue
+        fields = ['name', 'direction', 'phone_number', 'description', 'image']
 
     def __init__(self, *args, **kwargs):
         super(VenueCreateForm, self).__init__(*args, **kwargs)
@@ -18,6 +19,7 @@ class VenueUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Venue
+        fields = ['name', 'direction', 'phone_number', 'description', 'image']
 
     def __init__(self, *args, **kwargs):
         super(VenueUpdateForm, self).__init__(*args, **kwargs)

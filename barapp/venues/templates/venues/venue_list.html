@@ -1,0 +1,32 @@
+{% extends 'common/base.html' %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Venue results" %}</h1>
+    <ul class="list-group>">
+        {% for venue in venue_list %}
+            <li class="list-group-item">
+                <strong>{{ venue.name }}</strong>
+                <div class="btn-group">
+                    <a href="{% url 'venues:venue_detail' venue.id %}" class="btn btn-primary">
+                        {% trans "View" %}    
+                    </a>
+                    <a href="{% url 'venues:venue_update' venue.id %}" class="btn btn-primary">
+                        {% trans "Update" %}    
+                    </a>
+                    <a href="{% url 'venues:venue_delete' venue.id %}" class="btn btn-primary">
+                        {% trans "Delete" %}    
+                    </a>
+                </div>
+            </li>
+        {% empty %}
+            <div class="alert alert-warning">
+                <p>{% trans "No Venue results" %}</p>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

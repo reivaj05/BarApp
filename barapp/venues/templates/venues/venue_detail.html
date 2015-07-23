@@ -1,0 +1,33 @@
+{% extends 'common/base.html' %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-sm-offset-0 col-xs-12">
+            <div class="thumbnail">
+                <img class="img-rounded" src="{{ venue.image.url }}" />
+                <div class="caption">
+                    <h3>{{ venue.name }}</h3>
+                    {% if venue.direction %}
+                        <p><strong>{% trans "Direction:" %}</strong> {{ venue.direction }}</p>
+                    {% endif %}
+                    {% if venue.phone_number %}
+                        <p><strong>{% trans "Phone number" %}</strong> {{ venue.phone_number }}</p>
+                    {% endif %}
+                    {% if venue.description %}
+                        <p><strong>{% trans "Description:" %}</strong> {{ venue.description }}</p>
+                    {% endif %}
+
+                    <a href="{% url 'venues:venue_update' venue.id %}">
+                        <btn class="btn btn-success">{% trans "Edit venue" %}</btn>
+                    </a>
+                </div>
+            </div><!-- thumbnail -->
+        </div><!-- col-md -->
+    </div><!-- row -->
+</div><!-- container -->
+
+{% endblock %}

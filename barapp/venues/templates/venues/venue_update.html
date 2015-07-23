@@ -1,0 +1,22 @@
+{% extends 'common/base.html' %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{% trans "Update venue" %}</h1>
+            <form action="{% url 'venues:venue_update' venue.id %}" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-success">{% trans "Update" %}</button>
+                {% endbuttons %}
+            </form>
+        </div><!-- col-md -->
+    </div><!-- row -->
+</div><!-- container -->
+
+{% endblock %}
