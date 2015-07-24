@@ -1,6 +1,6 @@
 from django.views.generic import (
-    CreateView, DetailView, ListView,
-    TemplateView, UpdateView,
+    CreateView, DetailView, DeleteView,
+    ListView, TemplateView, UpdateView,
 )
 from django.core.urlresolvers import reverse
 from django.http import Http404
@@ -28,6 +28,24 @@ class VenueDetailView(LoginRequiredMixin, DetailView):
     model = Venue
 
 
+class VenueDeleteView(
+        LoginRequiredMixin, PermissionRequiredMixin,
+        FormMessagesMixin, DeleteView):
+    template_name = 'venues/venue_delete.html'
+    model = Venue
+    permission = 'venues.delete_venue'
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super(VenueDeleteView, self).dispatch(
+                request, *args, **kwargs)
+        except Venue.DoesNotExist:
+            raise Http404
+
+    def get_success_url(self):
+        return reverse('venues:venue_list')
+
+
 class VenueCreateView(
         LoginRequiredMixin, PermissionRequiredMixin,
         FormMessagesMixin, CreateView):
@@ -50,6 +68,9 @@ class VenueUpdateView(
     permission = 'venues.change_venue'
     success_message = 'venue successfully updated'
     error_message = 'An error ocurred trying to update the venue'
+
+    def get_success_url(self):
+        return reverse('venues:venue_detail', kwargs={'pk': self.kwargs['pk']})
 
     def dispatch(self, request, *args, **kwargs):
         try:

@@ -13,6 +13,7 @@ class Venue(models.Model):
     name = models.CharField(
         _('Venue name'),
         max_length=50,
+        unique=True,
         help_text=_('Write a name for the venue')
     )
     description = models.TextField(

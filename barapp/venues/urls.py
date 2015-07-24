@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import (
-    IndexView, VenueCreateView, VenueListView,
-    VenueDetailView, VenueUpdateView,
+    IndexView, VenueCreateView, VenueDeleteView,
+    VenueListView, VenueDetailView, VenueUpdateView,
 )
 
 urlpatterns = [
@@ -20,7 +20,7 @@ urlpatterns = [
     ),
     url(
         r'^venue-delete/(?P<pk>[0-9]+)/$',
-        VenueUpdateView.as_view(),
+        VenueDeleteView.as_view(),
         name='venue_delete'
     ),
 ]
