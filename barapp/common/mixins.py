@@ -3,6 +3,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.shortcuts import redirect
 
 
@@ -74,3 +75,14 @@ class PermissionRequiredMixin(View):
             raise ImproperlyConfigured(
                 '"permission" field must be defined'
             )
+
+
+class DoesExistMixin(View):
+    model = None
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super(DoesExistMixin, self).dispatch(
+                request, *args, **kwargs)
+        except self.model.DoesNotExist:
+            raise Http404

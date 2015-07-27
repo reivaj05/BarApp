@@ -9,10 +9,15 @@ class VenueCreateForm(forms.ModelForm):
         fields = ['name', 'direction', 'phone_number', 'description', 'image']
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
         super(VenueCreateForm, self).__init__(*args, **kwargs)
 
-    def clean(self):
-        return self.cleaned_data
+    def save(self, commit=True):
+        venue = super(VenueCreateForm, self).save(commit=False)
+        venue.user = self.user
+        if commit:
+            venue.save()
+        return venue
 
 
 class VenueUpdateForm(forms.ModelForm):
@@ -23,19 +28,3 @@ class VenueUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VenueUpdateForm, self).__init__(*args, **kwargs)
-        try:
-            venue = Venue.objects.get(
-                id=kwargs['instance'].id
-            )
-        except Venue.DoesNotExist:
-            raise forms.ValidationError(
-                'The venue "%(venue)s" does not exist',
-                code='invalid_venue',
-                params={
-                    'venue': kwargs['instance'].name
-                }
-            )
-        self.initial.update({
-            'name': venue.name,
-            'description': venue.description,
-        })

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 # Create your models here.
@@ -43,6 +44,7 @@ class Venue(models.Model):
             image_path='menus/img/venue_photo.png'),
         help_text=_('Upload an image for the venue')
     )
+    user = models.ForeignKey(User)
 
     def __unicode__(self):
         return '{venue_name}'.format(venue_name=self.name)
