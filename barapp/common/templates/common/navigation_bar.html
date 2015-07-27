@@ -23,12 +23,10 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a href="{% url 'accounts:user_profile' %}">{% trans "Profile" %}</a>
+                        </li>                        
+                        <li>
+                            <a href="{% url 'venues:venue_list' %}">{% trans "venues" %}</a>
                         </li>
-                        {% if perms.venues.add_venue %}
-                            <li>
-                                <a href="{% url 'venues:venue_create' %}">{% trans "Add venue" %}</a>
-                            </li>
-                        {% endif %}
                         <li>
                             <a href="{% url 'accounts:logout' %}">{% trans "Logout" %}</a>
                         </li>

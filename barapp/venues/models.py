@@ -41,7 +41,7 @@ class Venue(models.Model):
         blank=True,
         default='{url}{image_path}'.format(
             url=settings.STATIC_URL,
-            image_path='menus/img/venue_photo.png'),
+            image_path='venues/img/venue_photo.png'),
         help_text=_('Upload an image for the venue')
     )
     user = models.ForeignKey(User)
