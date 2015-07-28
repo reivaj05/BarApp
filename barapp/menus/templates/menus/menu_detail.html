@@ -1,0 +1,28 @@
+{% extends 'common/base.html' %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-sm-offset-0 col-xs-12">
+            <div class="thumbnail">
+                <div class="caption">
+                    {% if menu.name %}
+                        <h3>{{ menu.name }}</h3>
+                    {% endif %}
+                    {% if menu.description %}
+                        <h3>{{ menu.description }}</h3>
+                    {% endif %}
+
+                    <a href="{% url 'menus:menu_update' venue.id menu.id %}">
+                        <btn class="btn btn-success">{% trans "Edit menu" %}</btn>
+                    </a>
+                </div>
+            </div><!-- thumbnail -->
+        </div><!-- col-md -->
+    </div><!-- row -->
+</div><!-- container -->
+
+{% endblock %}

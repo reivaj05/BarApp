@@ -26,7 +26,7 @@ class Menu(models.Model):
         blank=True,
         help_text=_('Write a description for the menu')
     )  # ??
-    #venue = models.ForeignKey(Venue, help_text=_('Select the desired venue'))
+    venue = models.ForeignKey(Venue)
 
     def __unicode__(self):
         return '{menu_name}'.format(menu_name=self.name)
@@ -58,7 +58,7 @@ class MenuSection(models.Model):
         help_text=_('Upload an image for the menu section')
 
     )
-    menu = models.ForeignKey(Menu, help_text=_('Select the desired menu'))
+    menu = models.ForeignKey(Menu)
 
     def __unicode__(self):
         return '{section_name}'.format(section_name=self.name)
@@ -97,7 +97,7 @@ class Product(models.Model):
             image_path='menus/img/product_photo.png'),
         help_text=_('Upload an image for the product')
     )
-    section = models.ForeignKey(MenuSection, help_text=_('Select the desired section'))
+    section = models.ForeignKey(MenuSection)
 
     def __unicode__(self):
         return '{product_name}'.format(product_name=self.name)

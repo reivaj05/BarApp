@@ -1,0 +1,32 @@
+{% extends 'common/base.html' %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Menu results" %}</h1>
+    <ul class="list-group>">
+        {% for menu in menu_list %}
+            <li class="list-group-item">
+                <strong>{{ menu.name }}</strong>
+                <div class="btn-group">
+                    <a href="{% url 'menus:menu_detail' venue.id menu.id %}" class="btn btn-primary">
+                        {% trans "View" %}    
+                    </a>
+                    <a href="{% url 'menus:menu_update' venue.id menu.id %}" class="btn btn-primary">
+                        {% trans "Update" %}    
+                    </a>
+                    <a href="{% url 'menus:menu_delete' venue.id menu.id %}" class="btn btn-primary">
+                        {% trans "Delete" %}    
+                    </a>
+                </div>
+            </li>
+        {% empty %}
+            <div class="alert alert-warning">
+                <p>{% trans "No Menu results" %}</p>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

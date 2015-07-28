@@ -1,8 +1,8 @@
+from django.core.urlresolvers import reverse
 from django.views.generic import (
     CreateView, DetailView, DeleteView,
     ListView, TemplateView, UpdateView,
 )
-from django.core.urlresolvers import reverse
 from .forms import VenueCreateForm, VenueUpdateForm
 from .models import Venue
 from common.mixins import (

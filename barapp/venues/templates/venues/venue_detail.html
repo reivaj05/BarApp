@@ -28,6 +28,10 @@
             </div><!-- thumbnail -->
         </div><!-- col-md -->
     </div><!-- row -->
+    <a href="{% url 'menus:menu_create' venue.id %}">
+        <button type="button" class="btn-primary" >{% trans "Create Menu" %}</button>
+    </a>
+        
 </div><!-- container -->
 
 {% endblock %}
