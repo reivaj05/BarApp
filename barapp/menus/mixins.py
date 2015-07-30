@@ -1,9 +1,8 @@
 from django.http import Http404
-from django.views.generic import View
 from venues.models import Venue
 
 
-class HandleVenueMixin(View):
+class HandleVenueMixin(object):
 
     def get_context_data(self, **kwargs):
         context = super(HandleVenueMixin, self).get_context_data(**kwargs)
